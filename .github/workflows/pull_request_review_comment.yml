@@ -20,6 +20,7 @@ jobs:
         POSITION: ${{ github.event.comment.position }}
         CREATED_AT: ${{ github.event.comment.created_at }}
         UPDATED_AT: ${{ github.event.comment.updated_at }}
+        IN_REPLY_TO: ${{ github.event.comment.in_reply_to_id }}
       run: |
         echo "Comment ID: $COMMENT_ID"
         echo "Comment Body: $COMMENT_BODY"
@@ -33,3 +34,9 @@ jobs:
         echo "Line Position: $POSITION"
         echo "Created At: $CREATED_AT"
         echo "Updated At: $UPDATED_AT"
+        
+        if [ ! -z "$IN_REPLY_TO" ]; then
+          echo "This is a reply to comment ID: $IN_REPLY_TO"
+        else
+          echo "This is a top-level comment"
+        fi

@@ -1,11 +1,35 @@
 name: pull_request_review_comment trigger
-on:  
+on:
   pull_request_review_comment:
     types: [created]
-jobs:  
-  differentiate_comments:  
-    runs-on: ubuntu-latest  
-    steps:  
-    - name: Check comment type  
-      run: |  
-          echo "pull_request_review_comment"  
+jobs:
+  differentiate_comments:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get comment details
+      env:
+        COMMENT_ID: ${{ github.event.comment.id }}
+        COMMENT_BODY: ${{ github.event.comment.body }}
+        COMMENT_URL: ${{ github.event.comment.html_url }}
+        COMMENTER: ${{ github.event.comment.user.login }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
+        REPO: ${{ github.repository }}
+        COMMIT_ID: ${{ github.event.comment.commit_id }}
+        PATH: ${{ github.event.comment.path }}
+        POSITION: ${{ github.event.comment.position }}
+        CREATED_AT: ${{ github.event.comment.created_at }}
+        UPDATED_AT: ${{ github.event.comment.updated_at }}
+      run: |
+        echo "Comment ID: $COMMENT_ID"
+        echo "Comment Body: $COMMENT_BODY"
+        echo "Comment URL: $COMMENT_URL" 
+        echo "Commenter: $COMMENTER"
+        echo "Pull Request Number: $PR_NUMBER"
+        echo "Pull Request Title: $PR_TITLE"
+        echo "Repository: $REPO"
+        echo "Commit ID: $COMMIT_ID"
+        echo "File Path: $PATH"
+        echo "Line Position: $POSITION"
+        echo "Created At: $CREATED_AT"
+        echo "Updated At: $UPDATED_AT"

@@ -22,6 +22,7 @@ jobs:
         UPDATED_AT: ${{ github.event.comment.updated_at }}  
         IN_REPLY_TO: ${{ github.event.comment.in_reply_to_id }}  
         PULL_REQUEST_REVIEW_ID: ${{ github.event.comment.pull_request_review_id }}  
+        PULL_REQUEST_URL: ${{ github.event.pull_request.html_url }}  
       run: |  
         echo "Comment ID: $COMMENT_ID"  
         echo "Comment Body: $COMMENT_BODY"  
@@ -29,6 +30,7 @@ jobs:
         echo "Commenter: $COMMENTER"  
         echo "Pull Request Number: $PR_NUMBER"  
         echo "Pull Request Title: $PR_TITLE"  
+        echo "Pull Request URL: $PULL_REQUEST_URL"  
         echo "Repository: $REPO"  
         echo "Commit ID: $COMMIT_ID"  
         echo "File Path: $PATH"  
@@ -43,7 +45,9 @@ jobs:
         fi  
   
         if [ ! -z "$PULL_REQUEST_REVIEW_ID" ]; then  
+          REVIEW_URL="$PULL_REQUEST_URL#pullrequestreview-$PULL_REQUEST_REVIEW_ID"  
           echo "This comment is part of a review with ID: $PULL_REQUEST_REVIEW_ID"  
+          echo "Review URL: $REVIEW_URL"  
         else  
           echo "This is a single diff comment (not part of a review)"  
-        fi
+        fi  

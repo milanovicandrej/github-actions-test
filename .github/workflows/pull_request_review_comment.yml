@@ -1,42 +1,49 @@
-name: pull_request_review_comment trigger
-on:
-  pull_request_review_comment:
-    types: [created]
-jobs:
-  differentiate_comments:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Get comment details
-      env:
-        COMMENT_ID: ${{ github.event.comment.id }}
-        COMMENT_BODY: ${{ github.event.comment.body }}
-        COMMENT_URL: ${{ github.event.comment.html_url }}
-        COMMENTER: ${{ github.event.comment.user.login }}
-        PR_NUMBER: ${{ github.event.pull_request.number }}
-        PR_TITLE: ${{ github.event.pull_request.title }}
-        REPO: ${{ github.repository }}
-        COMMIT_ID: ${{ github.event.comment.commit_id }}
-        PATH: ${{ github.event.comment.path }}
-        POSITION: ${{ github.event.comment.position }}
-        CREATED_AT: ${{ github.event.comment.created_at }}
-        UPDATED_AT: ${{ github.event.comment.updated_at }}
-        IN_REPLY_TO: ${{ github.event.comment.in_reply_to_id }}
-      run: |
-        echo "Comment ID: $COMMENT_ID"
-        echo "Comment Body: $COMMENT_BODY"
-        echo "Comment URL: $COMMENT_URL" 
-        echo "Commenter: $COMMENTER"
-        echo "Pull Request Number: $PR_NUMBER"
-        echo "Pull Request Title: $PR_TITLE"
-        echo "Repository: $REPO"
-        echo "Commit ID: $COMMIT_ID"
-        echo "File Path: $PATH"
-        echo "Line Position: $POSITION"
-        echo "Created At: $CREATED_AT"
-        echo "Updated At: $UPDATED_AT"
-        
-        if [ ! -z "$IN_REPLY_TO" ]; then
-          echo "This is a reply to comment ID: $IN_REPLY_TO"
-        else
-          echo "This is a top-level comment"
+name: pull_request_review_comment trigger  
+on:  
+  pull_request_review_comment:  
+    types: [created]  
+jobs:  
+  differentiate_comments:  
+    runs-on: ubuntu-latest  
+    steps:  
+    - name: Get comment details  
+      env:  
+        COMMENT_ID: ${{ github.event.comment.id }}  
+        COMMENT_BODY: ${{ github.event.comment.body }}  
+        COMMENT_URL: ${{ github.event.comment.html_url }}  
+        COMMENTER: ${{ github.event.comment.user.login }}  
+        PR_NUMBER: ${{ github.event.pull_request.number }}  
+        PR_TITLE: ${{ github.event.pull_request.title }}  
+        REPO: ${{ github.repository }}  
+        COMMIT_ID: ${{ github.event.comment.commit_id }}  
+        PATH: ${{ github.event.comment.path }}  
+        POSITION: ${{ github.event.comment.position }}  
+        CREATED_AT: ${{ github.event.comment.created_at }}  
+        UPDATED_AT: ${{ github.event.comment.updated_at }}  
+        IN_REPLY_TO: ${{ github.event.comment.in_reply_to_id }}  
+        PULL_REQUEST_REVIEW_ID: ${{ github.event.comment.pull_request_review_id }}  
+      run: |  
+        echo "Comment ID: $COMMENT_ID"  
+        echo "Comment Body: $COMMENT_BODY"  
+        echo "Comment URL: $COMMENT_URL"   
+        echo "Commenter: $COMMENTER"  
+        echo "Pull Request Number: $PR_NUMBER"  
+        echo "Pull Request Title: $PR_TITLE"  
+        echo "Repository: $REPO"  
+        echo "Commit ID: $COMMIT_ID"  
+        echo "File Path: $PATH"  
+        echo "Line Position: $POSITION"  
+        echo "Created At: $CREATED_AT"  
+        echo "Updated At: $UPDATED_AT"  
+          
+        if [ ! -z "$IN_REPLY_TO" ]; then  
+          echo "This is a reply to comment ID: $IN_REPLY_TO"  
+        else  
+          echo "This is a top-level comment"  
+        fi  
+  
+        if [ ! -z "$PULL_REQUEST_REVIEW_ID" ]; then  
+          echo "This comment is part of a review with ID: $PULL_REQUEST_REVIEW_ID"  
+        else  
+          echo "This is a single diff comment (not part of a review)"  
         fi
